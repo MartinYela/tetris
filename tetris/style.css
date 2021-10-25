@@ -84,7 +84,9 @@ body {
     gap: 10px;
 }
 
-
+.printBlock {
+    opacity: 1;
+}
 
 
 
