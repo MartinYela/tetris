@@ -186,3 +186,39 @@ const stop = setInterval(() => {     //para parar el setInterval es clearInterva
         moveDown();
     }
 }, 1000);
+
+
+// function GameOver()
+
+
+function gameOver() {
+    let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
+
+    if (isGameOver()) { // se llama a la funcion isGameOver 
+        principalGame.innerHTML = '';  // Borra el principalGame
+        let imgGameOver = document.createElement('img');  // se crea un tag IMG y se mete adentro de la variable imgGameOver
+        imgGameOver.src = "../gameOver.png"; // se coloca la foto png dentro de imgGameOver
+        imgGameOver.classList.add('img_game-over'); // se le agrega la clase a la img
+        principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
+        document.addEventListener('keyDown', (e) =>  {
+            
+        })
+    }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    let principalGame = document.getElementById('boards__container--big')
+    principalGame.addEventListener('click', e => {
+        principalGame.innerHTML = '';
