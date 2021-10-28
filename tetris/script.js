@@ -2,6 +2,10 @@ function drowBoard(container_class, height, width){
     let amount = height*width;
     for (let i=1;i<=amount;i++){
         let block = generateBoardBlock();
+        if (container_class === '.boards__container--small'){
+            block.classList.add('miniBlock');
+        }
+        
         document.querySelector(container_class).appendChild(block);
     }
 }
@@ -42,8 +46,14 @@ const tetrominos = [I, L, S, Z, J, Q, T];
 return tetrominos;
 }
 
-const tetrominos = createArrTetrominoe(BOARD_WIDTH);
-const tetrominos__small = createArrTetrominoe(BOARD_WIDTH__mini);
+const tetrominos = createArrTetrominoe(BOARD_WIDTH);        //array de tetrominos para board-big
+const tetrominos__small = createArrTetrominoe(BOARD_WIDTH__mini); //array de tetrominos para board-mini
+
+let aleatTetrominoe = generateRandomTetrominoe(tetrominos); // genero el objeto tetromino
+let currentRotation = 0;  //rotacion actual del tetromino
+
+let currentTetromino = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]; //tetromino en la posicion actual
+drawTetrominoeInMainBoard(currentTetromino);
 
 function generateRandomTetrominoe(tetrominoe_arr) {     //le paso un array de tetrominoe
     const position = Math.floor((Math.random() * (7 - 0) + 0));
@@ -57,102 +67,122 @@ function generateRandomTetrominoe(tetrominoe_arr) {     //le paso un array de te
     return obj;
 }
 
-function drawTetrominoeInMainBoard(tetrominoeObj) {
+// function drawTetrominoeInMainBoard(tetrominoeObj) {
+//     for (let i=0; i<4;i++){
+//         document.querySelectorAll('.block')[tetrominoeObj.piece[i]+currentPosition].classList.add('printBlock');
+//     }
+// }
+// function undrawTetrominoeInMainBoard(tetrominoeObj) {
+//     for (let i=0; i<4;i++){
+//         document.querySelectorAll('.block')[tetrominoeObj.piece[i]+currentPosition].classList.remove('printBlock');
+//     }
+// }
+const array = document.querySelectorAll('block');       //los 200 bloques
+
+function drawTetrominoeInMainBoard(tetrominoe) {
     for (let i=0; i<4;i++){
-        document.querySelectorAll('.block')[tetrominoeObj.piece[i]+currentPosition].classList.add('printBlock');
+        document.querySelectorAll('.block')[tetrominoe[i]+currentPosition].classList.add('printBlock');
     }
 }
 
-function undrawTetrominoeInMainBoard(tetrominoeObj) {
+function undrawTetrominoeInMainBoard(tetrominoe) {
     for (let i=0; i<4;i++){
-        document.querySelectorAll('.block')[tetrominoeObj.piece[i]+currentPosition].classList.remove('printBlock');
+        document.querySelectorAll('.block')[tetrominoe[i]+currentPosition].classList.remove('printBlock');
     }
 }
 
 
-let aleatTetrominoe = generateRandomTetrominoe(tetrominos);
-drawTetrominoeInMainBoard(aleatTetrominoe);
+function drawTetrominoeInMiniBoard(tetrominoeObj) {
+    for (let i=0; i<4;i++){
+        document.querySelectorAll('.miniBlock')[tetrominoeObj.piece[i]].classList.add('printBlock');
+    }
+}
+
+function undrawTetrominoeInMiniBoard(tetrominoeObj) {
+    for (let i=0; i<4;i++){
+        document.querySelectorAll('.miniBlock')[tetrominoeObj.piece[i]].classList.remove('printBlock');
+    }
+}
+
+let aleatTetrominoeMini = generateRandomTetrominoe(tetrominos__small); //se crea el tetromino aleatorio para el mini board
+drawTetrominoeInMiniBoard(aleatTetrominoeMini);
 
 
+function moveRigth(){
+    if (currentTetromino.some((block) => (block+1+currentPosition)%10 === 0)){
+        // Poner sonido de que no se puede mover
+    } else {
+        undrawTetrominoeInMainBoard(currentTetromino);
+        currentPosition ++;
+        drawTetrominoeInMainBoard(currentTetromino);
+    }    
+}
+function moveLeft(){
+    if (currentTetromino.some((block) => (block+currentPosition)%10 === 0)){
+        // Poner sonido de que no se puede mover
+    } else {
+        undrawTetrominoeInMainBoard(currentTetromino);
+        currentPosition --;
+        drawTetrominoeInMainBoard(currentTetromino);
+    }
+}
+function moveDown(){
+    if (currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200)){
+        // Poner sonido de que no se puede mover
+    } else {
+        undrawTetrominoeInMainBoard(currentTetromino);
+        currentPosition += BOARD_WIDTH;
+        drawTetrominoeInMainBoard(currentTetromino);
+    }
+}
+
+function rotate() {
+    undrawTetrominoeInMainBoard(currentTetromino);
+    if (currentRotation < tetrominos[aleatTetrominoe.positionAtTetrominoeList].length-1) {//si hay + posiciones para rotar
+        currentRotation ++;
+    } else {
+        currentRotation = 0;
+    }
+
+    currentTetromino= tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation];
+    drawTetrominoeInMainBoard(currentTetromino);
+}
 
 
+//TODO LO DE ABAJO DE MOMENTO ES PARA PRUEBAS
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === ' '){
+        rotate();
+    }
+   });
+
+// Prueba con evento
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowRight'){
+        moveRigth();
+    }
+   });
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft'){
+        moveLeft();
+    }
+   });
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowDown'){
+    moveDown();
+}
+});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Prueba de funcionamiento fichas
-
-
-// document.querySelectorAll('.block')[J[0][0]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[0][1]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[0][2]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[0][3]].setAttribute('style', 'opacity:1;');
-
-// setTimeout(() => {
-//     document.querySelectorAll('.block')[J[0][0]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[0][1]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[0][2]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[0][3]].setAttribute('style', 'opacity:0.2;');
-// },500);
-
-
-// setTimeout(() => {
-// document.querySelectorAll('.block')[J[1][0]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[1][1]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[1][2]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[1][3]].setAttribute('style', 'opacity:1;');
-// },1000);
-// setTimeout(() => {
-//     document.querySelectorAll('.block')[J[1][0]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[1][1]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[1][2]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[1][3]].setAttribute('style', 'opacity:0.2;');
-// },1500);
-
-// setTimeout(() => {
-// document.querySelectorAll('.block')[J[2][0]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[2][1]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[2][2]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[2][3]].setAttribute('style', 'opacity:1;');
-// },2000);
-// setTimeout(() => {
-// document.querySelectorAll('.block')[J[2][0]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[2][1]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[2][2]].setAttribute('style', 'opacity:0.2;');
-// document.querySelectorAll('.block')[J[2][3]].setAttribute('style', 'opacity:0.2;');
-// },2500);
-// setTimeout(() => {
-// document.querySelectorAll('.block')[J[3][0]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[3][1]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[3][2]].setAttribute('style', 'opacity:1;');
-// document.querySelectorAll('.block')[J[3][3]].setAttribute('style', 'opacity:1;');
-// },3000);
+const stop = setInterval(() => {     //para parar el setInterval es clearInterval(parar)
+    if (currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200)){
+        aleatTetrominoe = generateRandomTetrominoe(tetrominos);
+        currentRotation=0;
+        currentTetromino = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation];
+        currentPosition = 3;
+        drawTetrominoeInMainBoard(currentTetromino);
+    } else {
+        moveDown();
+    }
+}, 1000);
