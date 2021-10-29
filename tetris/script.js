@@ -51,9 +51,17 @@ const tetrominos__small = createArrTetrominoe(BOARD_WIDTH__mini); //array de tet
 
 let aleatTetrominoe = generateRandomTetrominoe(tetrominos); // genero el objeto tetromino
 let currentRotation = 0;  //rotacion actual del tetromino
-
-let currentTetromino = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]; //tetromino en la posicion actual
+let currentTetromino = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation];
+ //tetromino en la posicion actual
 drawTetrominoeInMainBoard(currentTetromino);
+let aleatTetrominoe2 = aleatTetrominoe;
+let currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]
+
+
+let aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
+drawTetrominoeInMiniBoard(aleatTetrominoeMini);
+
+
 
 function generateRandomTetrominoe(tetrominoe_arr) {     //le paso un array de tetrominoe
     const position = Math.floor((Math.random() * (7 - 0) + 0));
@@ -77,74 +85,108 @@ function generateRandomTetrominoe(tetrominoe_arr) {     //le paso un array de te
 //         document.querySelectorAll('.block')[tetrominoeObj.piece[i]+currentPosition].classList.remove('printBlock');
 //     }
 // }
-const array = document.querySelectorAll('block');       //los 200 bloques
+const boardArray = document.querySelectorAll('block');       //los 200 bloques
 
 function drawTetrominoeInMainBoard(tetrominoe) {
     for (let i=0; i<4;i++){
-        document.querySelectorAll('.block')[tetrominoe[i]+currentPosition].classList.add('printBlock');
+        document.querySelectorAll('.boards__container--big  > .block ')[tetrominoe[i]+currentPosition].classList.add('printBlock');
     }
 }
 
 function undrawTetrominoeInMainBoard(tetrominoe) {
     for (let i=0; i<4;i++){
-        document.querySelectorAll('.block')[tetrominoe[i]+currentPosition].classList.remove('printBlock');
+        document.querySelectorAll('.boards__container--big > .block')[tetrominoe[i]+currentPosition].classList.remove('printBlock');
     }
 }
 
 
 function drawTetrominoeInMiniBoard(tetrominoeObj) {
     for (let i=0; i<4;i++){
-        document.querySelectorAll('.miniBlock')[tetrominoeObj.piece[i]].classList.add('printBlock');
+        document.querySelectorAll('.miniBlock')[tetrominoeObj[i]].classList.add('printBlock');
     }
 }
 
 function undrawTetrominoeInMiniBoard(tetrominoeObj) {
     for (let i=0; i<4;i++){
-        document.querySelectorAll('.miniBlock')[tetrominoeObj.piece[i]].classList.remove('printBlock');
+        document.querySelectorAll('.miniBlock')[tetrominoeObj[i]].classList.remove('printBlock');
     }
 }
 
-let aleatTetrominoeMini = generateRandomTetrominoe(tetrominos__small); //se crea el tetromino aleatorio para el mini board
-drawTetrominoeInMiniBoard(aleatTetrominoeMini);
+function  isRigthBoardOut() {
+    return currentTetromino.some((block) => (block+1+currentPosition)%10 === 0)
+}
+function isRigthBoardOutRotate() {
+    return currentTetromino.some((block) => (block+currentPosition)%10 === 0)
+}
+function isLeftBoardOut() {
+    return currentTetromino.some((block) => (block+currentPosition)%10 === 0)
+}
+function isBottonBoardOut() {
+    return currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200)
+}
 
 
 function moveRigth(){
-    if (currentTetromino.some((block) => (block+1+currentPosition)%10 === 0)){
+    if (isRigthBoardOut()){
         // Poner sonido de que no se puede mover
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
         currentPosition ++;
+        if (tetrominoeVerification()){
+            currentPosition --;
+        }
         drawTetrominoeInMainBoard(currentTetromino);
     }    
 }
 function moveLeft(){
-    if (currentTetromino.some((block) => (block+currentPosition)%10 === 0)){
+    if (isLeftBoardOut()){
         // Poner sonido de que no se puede mover
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
         currentPosition --;
+        if (tetrominoeVerification()){
+            currentPosition++;
+        }
         drawTetrominoeInMainBoard(currentTetromino);
     }
 }
 function moveDown(){
-    if (currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200)){
+    let comprobacion = true;
+    if (isBottonBoardOut()){
         // Poner sonido de que no se puede mover
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
         currentPosition += BOARD_WIDTH;
+        if (tetrominoeVerification()){
+            currentPosition -=BOARD_WIDTH;
+            comprobacion = false;
+        }
         drawTetrominoeInMainBoard(currentTetromino);
+        return comprobacion;
     }
 }
 
 function rotate() {
+    let comprobation = true;
+    const currentRotationnOLd = currentRotation; 
     undrawTetrominoeInMainBoard(currentTetromino);
-    if (currentRotation < tetrominos[aleatTetrominoe.positionAtTetrominoeList].length-1) {//si hay + posiciones para rotar
+    if (currentRotation < tetrominos[aleatTetrominoe2.positionAtTetrominoeList].length-1) {//si hay + posiciones para rotar
         currentRotation ++;
     } else {
         currentRotation = 0;
     }
-
-    currentTetromino= tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation];
+    currentTetromino= tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
+    
+    if (currentPosition <5){
+        comprobation = isLeftBoardOut();
+    }else {
+        comprobation = isRigthBoardOutRotate();
+    }
+    if (tetrominoeVerification()|| comprobation){
+        //sonido de no se puede
+        currentRotation=currentRotationnOLd;
+        currentTetromino= tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
+    }
     drawTetrominoeInMainBoard(currentTetromino);
 }
 
@@ -175,14 +217,26 @@ document.addEventListener('keydown', (event) => {
 });
 
 
+function tetrominoeVerification(){
+    const boardArr = document.querySelectorAll('.block');
+    return currentTetromino.some(e => boardArr[e+currentPosition].classList.contains('printBlock'));
+
+}
+console.log(tetrominoeVerification());
+
 const stop = setInterval(() => {     //para parar el setInterval es clearInterval(parar)
-    if (currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200)){
-        aleatTetrominoe = generateRandomTetrominoe(tetrominos);
+    if (currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200) || !moveDown() ){
         currentRotation=0;
-        currentTetromino = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation];
+        currentTetromino = currentTetrominoNext;
         currentPosition = 3;
         drawTetrominoeInMainBoard(currentTetromino);
-    } else {
-        moveDown();
-    }
+        aleatTetrominoe2 = aleatTetrominoe;
+        aleatTetrominoe = generateRandomTetrominoe(tetrominos);
+        currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]
+        undrawTetrominoeInMiniBoard(aleatTetrominoeMini);
+        aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
+        
+        drawTetrominoeInMiniBoard(aleatTetrominoeMini);
+
+    } 
 }, 1000);
