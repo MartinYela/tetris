@@ -21,6 +21,7 @@ function generateBoardBlock(){
 const BOARD_WIDTH = 10;
 const BOARD_WIDTH__mini = 4;
 
+
 drowBoard('.boards__container--big', 20, BOARD_WIDTH);
 drowBoard('.boards__container--small', 4, BOARD_WIDTH__mini);
 
@@ -194,25 +195,38 @@ function rotate() {
 //TODO LO DE ABAJO DE MOMENTO ES PARA PRUEBAS
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === ' '){
-        rotate();
-    }
-   });
+    switch (event.key) {
+        case ' ': 
+            rotate();
+            break;
+        
+        case 'ArrowRight': 
+            moveRigth();
+            break;
+        
+        case 'keydown': 
+            moveRigth();
+            break;
+        
+        case 'ArrowLeft': 
+            moveLeft();
+            break;
+        
+        case 'ArrowDown': 
+            moveDown();
+            break;
+        
+        default: 
+            //Poner sonido fallo
+        
+        }
+    }); 
+    
 
-// Prueba con evento
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowRight'){
-        moveRigth();
-    }
-   });
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowLeft'){
-        moveLeft();
-    }
-   });
+
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowDown'){
-    moveDown();
+    
 }
 });
 
@@ -240,3 +254,21 @@ const stop = setInterval(() => {     //para parar el setInterval es clearInterva
 
     } 
 }, 1000);
+
+function gameOver() {
+    let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
+    if (isGameOver()) { // se llama a la funcion isGameOver
+        principalGame.innerHTML = '';  // Borra el principalGame
+        let imgGameOver = document.createElement('img');  // se crea un tag IMG y se mete adentro de la variable imgGameOver
+        imgGameOver.src = "../gameOver.png"; // se coloca la foto png dentro de imgGameOver
+        imgGameOver.classList.add('img_game-over'); // se le agrega la clase a la img
+        principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
+        document.body.addEventListener('click', (e) =>  { // se agrega un listener al body para que se ejecute la funcion init
+            init()
+        })
+    }
+}
+
+function isGameOver() {
+    
+}
