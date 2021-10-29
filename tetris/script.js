@@ -200,12 +200,12 @@ function gameOver() {
         imgGameOver.src = "../gameOver.png"; // se coloca la foto png dentro de imgGameOver
         imgGameOver.classList.add('img_game-over'); // se le agrega la clase a la img
         principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
-        document.addEventListener('keyDown', (e) =>  {
-            
+        document.body.addEventListener('click', (e) =>  { // se agrega un listener al body para que se ejecute la funcion init
+            init()
         })
     }
 
-    }
+}
 
 
 
@@ -219,6 +219,4 @@ function gameOver() {
 
 
 
-    let principalGame = document.getElementById('boards__container--big')
-    principalGame.addEventListener('click', e => {
-        principalGame.innerHTML = '';
+
