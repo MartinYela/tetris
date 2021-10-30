@@ -62,6 +62,8 @@ function init() {
     aleatTetrominoe2 = aleatTetrominoe;
     drawTetrominoeInMainBoard(currentTetromino);
     drawTetrominoeInMiniBoard(aleatTetrominoeMini);
+    results = 0;
+    drawScore();
     gameLoop();
 }
 
@@ -144,7 +146,7 @@ function isLeftBoardOutRotate() {
     return currentTetromino.some((block) => (block+currentPosition-1)%10 === 0)
 }
 function isBottonBoardOut() {
-    return currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200)
+    return currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>=200)
 }
 
 
@@ -255,24 +257,25 @@ function tetrominoeVerification(){
 
 
 function createAndDrawNewTetromino() {
-    currentRotation=0;
-    currentTetromino = currentTetrominoNext;
-    currentPosition = 3;
-    drawTetrominoeInMainBoard(currentTetromino);
-    aleatTetrominoe2 = aleatTetrominoe;
-    aleatTetrominoe = generateRandomTetrominoe(tetrominos);
-    currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]
-    undrawTetrominoeInMiniBoard(aleatTetrominoeMini);
+    currentRotation=0;                  //reinicia la rotacion
+    currentTetromino = currentTetrominoNext; //cambia el tetromino por el siguiente a imprimir
+    currentPosition = 3;        // posicion de origen del nuevo tetromino
+    drawTetrominoeInMainBoard(currentTetromino); // pinta el tetromino nuevo
+    aleatTetrominoe2 = aleatTetrominoe; //guardo el objeto del tetrominoe actual, para poder seguir rotandolo
+    aleatTetrominoe = generateRandomTetrominoe(tetrominos); // crea el objeto del tetrominoe aleatorio
+    currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation] //crea el proximo tetromino
+    undrawTetrominoeInMiniBoard(aleatTetrominoeMini); //despinta el tetrominoe del cuadro pequeño
     aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
-    drawTetrominoeInMiniBoard(aleatTetrominoeMini);
+    drawTetrominoeInMiniBoard(aleatTetrominoeMini); // pinta el tetromino del mini board
 }
 
 let stop;
 function gameLoop(){
     stop = setInterval(() => {     //para parar el setInterval es clearInterval(stop)
     if (currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200) || !moveDown() ){
+        updateTetrisBoard() 
         createAndDrawNewTetromino();
-    } 
+    }   
 }, 1000);
 }
 
@@ -302,7 +305,41 @@ function gameOver() {
     }
 }
 
+let results = 0;
+function drawScore() {
+    let counterDiv = document.querySelector('.counter');
+    let counterDivResults = document.createElement('p');
+    counterDiv.innerHTML = '';
+    counterDivResults.textContent = results;
+    counterDiv.appendChild(counterDivResults);
+}
 
+function updateTetrisBoard() {
+    let contador =0;
+    let container = document.querySelector('.boards__container--big');
+    let boardArr = Array.from(document.querySelectorAll('.boards__container--big > .block'));
+    for (let i =0; i<200; i+= BOARD_WIDTH){         //recorro cada fila
+        const fila = [i, i+1,i+2,i+3,i+4,i+5,i+6,i+7,i+8,i+9];
+        
+        if (fila.every(indice => boardArr[indice].classList.contains('printBlock'))){ //compruebo si están todas pintadas
+            
+            fila.forEach(a => boardArr[a].classList.remove('printBlock')) //borro la clase q pinta cada fila
+            
+            let arrayRemove = boardArr.splice(i, BOARD_WIDTH);  //borro la fila
+            boardArr = arrayRemove.concat(boardArr);           //agrego las filas pintadas al principio del array
+            container.innerHTML = '';                     // vacío el contenedor
+            boardArr.forEach(block => container.appendChild(block)); // agrego uno por uno los bloques
+
+            results += 50;  // sumo puntos
+            drawScore();       // muestro los puntos 
+            contador ++;
+        }
+    }
+    if (contador >= 4){
+        results += 1000;
+        drawScore();
+    }
+};
 
 
 init(); // Cambiar esto por el botón que llama a esta función (importante que sea en esta línea)
