@@ -68,6 +68,10 @@ body {
     width: 120px;
     height: 40px;
     margin: 5px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
 }
 .points {
     margin-top: 10px;
@@ -87,6 +91,9 @@ body {
 
 .printBlock {
     opacity: 1;
+    /* border: 10px solid green;
+    background-color: green; 
+    box-shadow: 5px 5px 15px 5px #000000; */
 }
 
 .img_game-over {
