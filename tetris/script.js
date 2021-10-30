@@ -22,10 +22,7 @@ const BOARD_WIDTH = 10;
 const BOARD_WIDTH__mini = 4;
 
 
-drowBoard('.boards__container--big', 20, BOARD_WIDTH);
-drowBoard('.boards__container--small', 4, BOARD_WIDTH__mini);
 
-let currentPosition = 3;
 
 function createArrTetrominoe(width) {
     //crear palito  0
@@ -50,17 +47,38 @@ return tetrominos;
 const tetrominos = createArrTetrominoe(BOARD_WIDTH);        //array de tetrominos para board-big
 const tetrominos__small = createArrTetrominoe(BOARD_WIDTH__mini); //array de tetrominos para board-mini
 
-let aleatTetrominoe = generateRandomTetrominoe(tetrominos); // genero el objeto tetromino
-let currentRotation = 0;  //rotacion actual del tetromino
-let currentTetromino = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation];
+function init() {
+    document.querySelector('.boards__container--big').textContent = '';
+    document.querySelector('.boards__container--small').textContent = '';
+    drowBoard('.boards__container--big', 20, BOARD_WIDTH);
+    drowBoard('.boards__container--small', 4, BOARD_WIDTH__mini);
+    currentPosition = 3;
+    aleatTetrominoe = generateRandomTetrominoe(tetrominos); // genero el objeto tetromino
+    currentRotation = 0;  //rotacion actual del tetromino
+    currentTetromino = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation];
  //tetromino en la posicion actual
-drawTetrominoeInMainBoard(currentTetromino);
-let aleatTetrominoe2 = aleatTetrominoe;
-let currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]
+    currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]
+    aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
+    aleatTetrominoe2 = aleatTetrominoe;
+    drawTetrominoeInMainBoard(currentTetromino);
+    drawTetrominoeInMiniBoard(aleatTetrominoeMini);
+    gameLoop();
+}
 
 
-let aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
-drawTetrominoeInMiniBoard(aleatTetrominoeMini);
+
+let currentPosition;
+let aleatTetrominoe; // genero el objeto tetromino
+let currentRotation;  //rotacion actual del tetromino
+let currentTetromino;
+ //tetromino en la posicion actual
+
+let aleatTetrominoe2;
+let currentTetrominoNext;
+
+
+let aleatTetrominoeMini; //se crea el tetromino aleatorio para el mini board
+
 
 
 
@@ -122,6 +140,9 @@ function isRigthBoardOutRotate() {
 function isLeftBoardOut() {
     return currentTetromino.some((block) => (block+currentPosition)%10 === 0)
 }
+function isLeftBoardOutRotate() {
+    return currentTetromino.some((block) => (block+currentPosition-1)%10 === 0)
+}
 function isBottonBoardOut() {
     return currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200)
 }
@@ -179,7 +200,7 @@ function rotate() {
     currentTetromino= tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
     
     if (currentPosition <5){
-        comprobation = isLeftBoardOut();
+        comprobation = isLeftBoardOutRotate();
     }else {
         comprobation = isRigthBoardOutRotate();
     }
@@ -195,11 +216,14 @@ function rotate() {
 //TODO LO DE ABAJO DE MOMENTO ES PARA PRUEBAS
 
 document.addEventListener('keydown', (event) => {
+    event.preventDefault();
     switch (event.key) {
         case ' ': 
             rotate();
             break;
-        
+        case 'ArrowUp':
+            rotate();
+            break;
         case 'ArrowRight': 
             moveRigth();
             break;
@@ -221,14 +245,6 @@ document.addEventListener('keydown', (event) => {
         
         }
     }); 
-    
-
-
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowDown'){
-    
-}
-});
 
 
 function tetrominoeVerification(){
@@ -236,39 +252,57 @@ function tetrominoeVerification(){
     return currentTetromino.some(e => boardArr[e+currentPosition].classList.contains('printBlock'));
 
 }
-console.log(tetrominoeVerification());
 
-const stop = setInterval(() => {     //para parar el setInterval es clearInterval(parar)
+
+function createAndDrawNewTetromino() {
+    currentRotation=0;
+    currentTetromino = currentTetrominoNext;
+    currentPosition = 3;
+    drawTetrominoeInMainBoard(currentTetromino);
+    aleatTetrominoe2 = aleatTetrominoe;
+    aleatTetrominoe = generateRandomTetrominoe(tetrominos);
+    currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]
+    undrawTetrominoeInMiniBoard(aleatTetrominoeMini);
+    aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
+    drawTetrominoeInMiniBoard(aleatTetrominoeMini);
+}
+
+let stop;
+function gameLoop(){
+    stop = setInterval(() => {     //para parar el setInterval es clearInterval(stop)
     if (currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200) || !moveDown() ){
-        currentRotation=0;
-        currentTetromino = currentTetrominoNext;
-        currentPosition = 3;
-        drawTetrominoeInMainBoard(currentTetromino);
-        aleatTetrominoe2 = aleatTetrominoe;
-        aleatTetrominoe = generateRandomTetrominoe(tetrominos);
-        currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]
-        undrawTetrominoeInMiniBoard(aleatTetrominoeMini);
-        aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
-        
-        drawTetrominoeInMiniBoard(aleatTetrominoeMini);
-
+        createAndDrawNewTetromino();
     } 
 }, 1000);
+}
+
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'p'){
+        clearInterval(stop)
+    }
+    if (event.key === 'Enter'){
+        gameLoop();
+    }
+})
+        
+
 
 function gameOver() {
-    let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
     if (isGameOver()) { // se llama a la funcion isGameOver
+         let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
         principalGame.innerHTML = '';  // Borra el principalGame
         let imgGameOver = document.createElement('img');  // se crea un tag IMG y se mete adentro de la variable imgGameOver
-        imgGameOver.src = "../gameOver.png"; // se coloca la foto png dentro de imgGameOver
+        imgGameOver.src = "https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg?fit=960%2C720"; // se coloca la foto png dentro de imgGameOver
         imgGameOver.classList.add('img_game-over'); // se le agrega la clase a la img
         principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
         document.body.addEventListener('click', (e) =>  { // se agrega un listener al body para que se ejecute la funcion init
-            init()
+            init();
         })
     }
 }
 
-function isGameOver() {
-    
-}
+
+
+
+init(); // Cambiar esto por el botón que llama a esta función (importante que sea en esta línea)

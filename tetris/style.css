@@ -89,6 +89,8 @@ body {
     opacity: 1;
 }
 
-
-
-
+.img_game-over {
+    width: 250px;
+    margin-left: 25px;
+    margin-top: 206.25px;
+}
