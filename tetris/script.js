@@ -313,7 +313,7 @@ document.addEventListener('keydown', (event) => {
 
 function gameOver() {
     if (isGameOver()) { // se llama a la funcion isGameOver
-        let noRepeat = 1;
+        let noRepeat = true;
         let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
         principalGame.innerHTML = '';  // Borra el principalGame
         let imgGameOver = document.createElement('img');  // se crea un tag IMG y se mete adentro de la variable imgGameOver
@@ -333,13 +333,13 @@ function gameOver() {
         sonidoGameOver.play();
 
         document.body.addEventListener('click', (e) => { // se agrega un listener al body para que se ejecute la funcion init
-            if (noRepeat === 1) {
+            if (noRepeat) {
                 clearInterval(stop);
                 principalGame.classList.remove('fondoNegro');
                 sonidoPrincipal.play();
                 init();
             }
-            noRepeat++;
+            noRepeat = false;
 
         })
 
