@@ -159,10 +159,7 @@ body {
         display: flex;
         justify-content: space-between;
         gap: 10px;
-    }
-    .container__boards {
-        flex-direction: column;
-        gap: 1px;
+        margin-bottom: 15px;
     }
     .boards__container--big {
         width: 200px;
@@ -184,6 +181,28 @@ body {
         font-size: 1.5rem;
     }
     .boards__container--rigth {
-         margin-top: 50px;
+        width: 90px;
+    }
+    .img_game-over {
+        width: 200px;
+        margin-left: 1px;
+        margin-top: 132px;
+    }
+    .counter {
+        width: 60px;
+        font-size: 1.6rem;
+    }
+    .boards__container--small {
+        height: 80px;
+        width: 80px;
+        grid-template-columns: repeat(4, 20px);
+        grid-template-rows: repeat(4, 20px);
+        margin: 10px 0;
+    }
+    .controls-rotate {
+        font-size: 0.8rem;
+    }
+    .controls-move {
+        font-size: 0.8rem;
     }
 }
