@@ -101,10 +101,11 @@ body {
     width: 250px;
     margin-left: 25px;
     margin-top: 206.25px;
-    opacity: 0.1;
+    /* opacity: 0.1; */
 }
 .fondoNegro {
     background-color: black;
+    opacity: 0.8;
 }
 .button{
     cursor: pointer;
