@@ -316,7 +316,7 @@ function gameOver() {
         let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
         principalGame.innerHTML = '';  // Borra el principalGame
         let imgGameOver = document.createElement('img');  // se crea un tag IMG y se mete adentro de la variable imgGameOver
-        imgGameOver.src = "gameoverphrase.jpg"; // se coloca la foto png dentro de imgGameOver
+        imgGameOver.src = "img/gameoverphrase.jpg"; // se coloca la foto png dentro de imgGameOver
         imgGameOver.classList.add('img_game-over'); // se le agrega la clase a la img
         principalGame.classList.add('fondoNegro');
         principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
