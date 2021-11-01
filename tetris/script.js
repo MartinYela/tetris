@@ -1,21 +1,21 @@
-function drowBoard(container_class, height, width){  
-    let amount = height*width;
-    for (let i=1;i<=amount;i++){
+function drowBoard(container_class, height, width) {
+    let amount = height * width;
+    for (let i = 1; i <= amount; i++) {
         let block = generateBoardBlock();
-        if (container_class === '.boards__container--small'){
+        if (container_class === '.boards__container--small') {
             block.classList.add('miniBlock');
         }
-        
+
         document.querySelector(container_class).appendChild(block);
     }
 }
-function generateBoardBlock(){
-        let block = document.createElement('div');
-        block.classList.add(`block`);
-        let smallBlock = document.createElement('div');
-        smallBlock.classList.add(`smallBlock`);
-        block.appendChild(smallBlock);
-        return block;
+function generateBoardBlock() {
+    let block = document.createElement('div');
+    block.classList.add(`block`);
+    let smallBlock = document.createElement('div');
+    smallBlock.classList.add(`smallBlock`);
+    block.appendChild(smallBlock);
+    return block;
 }
 
 const BOARD_WIDTH = 10;
@@ -26,22 +26,22 @@ const BOARD_WIDTH__mini = 4;
 
 function createArrTetrominoe(width) {
     //crear palito  0
-const I = [ [0, 1, 2, 3] , [ 0, 0+width, 0+ 2*width, 0+ 3*width] ];
-// crear L  1
-const L = [ [0, 1, 2, 0+width], [1, 2, 2+width, 2+2*width], [0 + width, 1+width, 2+width, 2], [1, 1+width, 1+2*width, 2+2*width] ];
-// crear S  2
-const S = [ [0+width, 1+width, 1, 2], [0, 0+width, 1+width, 1+2*width]];
-// crear Z  3
-const Z = [ [0, 1, 1+width, 2+width] , [ 1, 1+width, 0+ width, 0+ 2*width]];
-// crear J 4
-const J = [ [0, 1, 2, 2+width] , [ 1, 1+width, 1+2*width, 2*width], [0, width, 1+width, 2+width], [0, 1, width, 2*width]];
-// crear Q  5
-const Q = [[0, 1, 0+width, 1+width]];
-// const Q = [[0, 1, 0+BOARD_WIDTH, 1+BOARD_WIDTH], [0, 1, 0+BOARD_WIDTH, 1+BOARD_WIDTH]]; para pruebas por el índice
-// crear T  6
-const T = [ [0, 1 , 2, 1+width], [1, 0+width, 1+width, 1+2*width], [1, 0+width, 1+width, 2+width], [0, 0+width, 1+width, 0+2*width], ];
-const tetrominos = [I, L, S, Z, J, Q, T];
-return tetrominos;
+    const I = [[0, 1, 2, 3], [0, 0 + width, 0 + 2 * width, 0 + 3 * width]];
+    // crear L  1
+    const L = [[0, 1, 2, 0 + width], [1, 2, 2 + width, 2 + 2 * width], [0 + width, 1 + width, 2 + width, 2], [1, 1 + width, 1 + 2 * width, 2 + 2 * width]];
+    // crear S  2
+    const S = [[0 + width, 1 + width, 1, 2], [0, 0 + width, 1 + width, 1 + 2 * width]];
+    // crear Z  3
+    const Z = [[0, 1, 1 + width, 2 + width], [1, 1 + width, 0 + width, 0 + 2 * width]];
+    // crear J 4
+    const J = [[0, 1, 2, 2 + width], [1, 1 + width, 1 + 2 * width, 2 * width], [0, width, 1 + width, 2 + width], [0, 1, width, 2 * width]];
+    // crear Q  5
+    const Q = [[0, 1, 0 + width, 1 + width]];
+    // const Q = [[0, 1, 0+BOARD_WIDTH, 1+BOARD_WIDTH], [0, 1, 0+BOARD_WIDTH, 1+BOARD_WIDTH]]; para pruebas por el índice
+    // crear T  6
+    const T = [[0, 1, 2, 1 + width], [1, 0 + width, 1 + width, 1 + 2 * width], [1, 0 + width, 1 + width, 2 + width], [0, 0 + width, 1 + width, 0 + 2 * width],];
+    const tetrominos = [I, L, S, Z, J, Q, T];
+    return tetrominos;
 }
 
 const tetrominos = createArrTetrominoe(BOARD_WIDTH);        //array de tetrominos para board-big
@@ -56,7 +56,7 @@ function init() {
     aleatTetrominoe = generateRandomTetrominoe(tetrominos); // genero el objeto tetromino
     currentRotation = 0;  //rotacion actual del tetromino
     currentTetromino = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation];
- //tetromino en la posicion actual
+    //tetromino en la posicion actual
     currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation]
     aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
     aleatTetrominoe2 = aleatTetrominoe;
@@ -73,7 +73,7 @@ let currentPosition;
 let aleatTetrominoe; // genero el objeto tetromino
 let currentRotation;  //rotacion actual del tetromino
 let currentTetromino;
- //tetromino en la posicion actual
+//tetromino en la posicion actual
 
 let aleatTetrominoe2;
 let currentTetrominoNext;
@@ -109,80 +109,80 @@ function generateRandomTetrominoe(tetrominoe_arr) {     //le paso un array de te
 const boardArray = document.querySelectorAll('block');       //los 200 bloques
 
 function drawTetrominoeInMainBoard(tetrominoe) {
-    for (let i=0; i<4;i++){
-        document.querySelectorAll('.boards__container--big  > .block ')[tetrominoe[i]+currentPosition].classList.add('printBlock');
+    for (let i = 0; i < 4; i++) {
+        document.querySelectorAll('.boards__container--big  > .block ')[tetrominoe[i] + currentPosition].classList.add('printBlock');
     }
 }
 
 function undrawTetrominoeInMainBoard(tetrominoe) {
-    for (let i=0; i<4;i++){
-        document.querySelectorAll('.boards__container--big > .block')[tetrominoe[i]+currentPosition].classList.remove('printBlock');
+    for (let i = 0; i < 4; i++) {
+        document.querySelectorAll('.boards__container--big > .block')[tetrominoe[i] + currentPosition].classList.remove('printBlock');
     }
 }
 
 
 function drawTetrominoeInMiniBoard(tetrominoeObj) {
-    for (let i=0; i<4;i++){
+    for (let i = 0; i < 4; i++) {
         document.querySelectorAll('.miniBlock')[tetrominoeObj[i]].classList.add('printBlock');
     }
 }
 
 function undrawTetrominoeInMiniBoard(tetrominoeObj) {
-    for (let i=0; i<4;i++){
+    for (let i = 0; i < 4; i++) {
         document.querySelectorAll('.miniBlock')[tetrominoeObj[i]].classList.remove('printBlock');
     }
 }
 
-function  isRigthBoardOut() {
-    return currentTetromino.some((block) => (block+1+currentPosition)%10 === 0)
+function isRigthBoardOut() {
+    return currentTetromino.some((block) => (block + 1 + currentPosition) % 10 === 0)
 }
 function isRigthBoardOutRotate() {
-    return currentTetromino.some((block) => (block+currentPosition)%10 === 0)
+    return currentTetromino.some((block) => (block + currentPosition) % 10 === 0)
 }
 function isLeftBoardOut() {
-    return currentTetromino.some((block) => (block+currentPosition)%10 === 0)
+    return currentTetromino.some((block) => (block + currentPosition) % 10 === 0)
 }
 function isLeftBoardOutRotate() {
-    return currentTetromino.some((block) => (block+currentPosition-1)%10 === 0)
+    return currentTetromino.some((block) => (block + currentPosition - 1) % 10 === 0)
 }
 function isBottonBoardOut() {
-    return currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>=200)
+    return currentTetromino.some((block) => (block + currentPosition + BOARD_WIDTH) >= 200)
 }
 
 
-function moveRigth(){
-    if (isRigthBoardOut()){
+function moveRigth() {
+    if (isRigthBoardOut()) {
         // Poner sonido de que no se puede mover
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
-        currentPosition ++;
-        if (tetrominoeVerification()){
-            currentPosition --;
+        currentPosition++;
+        if (tetrominoeVerification()) {
+            currentPosition--;
         }
         drawTetrominoeInMainBoard(currentTetromino);
-    }    
+    }
 }
-function moveLeft(){
-    if (isLeftBoardOut()){
+function moveLeft() {
+    if (isLeftBoardOut()) {
         // Poner sonido de que no se puede mover
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
-        currentPosition --;
-        if (tetrominoeVerification()){
+        currentPosition--;
+        if (tetrominoeVerification()) {
             currentPosition++;
         }
         drawTetrominoeInMainBoard(currentTetromino);
     }
 }
-function moveDown(){
+function moveDown() {
     let comprobacion = true;
-    if (isBottonBoardOut()){
+    if (isBottonBoardOut()) {
         // Poner sonido de que no se puede mover
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
         currentPosition += BOARD_WIDTH;
-        if (tetrominoeVerification()){
-            currentPosition -=BOARD_WIDTH;
+        if (tetrominoeVerification()) {
+            currentPosition -= BOARD_WIDTH;
             comprobacion = false;
         }
         drawTetrominoeInMainBoard(currentTetromino);
@@ -192,26 +192,27 @@ function moveDown(){
 
 function rotate() {
     let comprobation = true;
-    const currentRotationnOLd = currentRotation; 
+    const currentRotationnOLd = currentRotation;
     undrawTetrominoeInMainBoard(currentTetromino);
-    if (currentRotation < tetrominos[aleatTetrominoe2.positionAtTetrominoeList].length-1) {//si hay + posiciones para rotar
-        currentRotation ++;
+    if (currentRotation < tetrominos[aleatTetrominoe2.positionAtTetrominoeList].length - 1) {//si hay + posiciones para rotar
+        currentRotation++;
     } else {
         currentRotation = 0;
     }
-    currentTetromino= tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
-    
-    if (currentPosition <5){
+    currentTetromino = tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
+
+    if (currentPosition < 5) {
         comprobation = isLeftBoardOutRotate();
-    }else {
+    } else {
         comprobation = isRigthBoardOutRotate();
     }
-    if (tetrominoeVerification()|| comprobation){
+    if (tetrominoeVerification() || comprobation) {
         //sonido de no se puede
-        currentRotation=currentRotationnOLd;
-        currentTetromino= tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
+        currentRotation = currentRotationnOLd;
+        currentTetromino = tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
     }
     drawTetrominoeInMainBoard(currentTetromino);
+    //Acá el sonido de cuando gira bien
 }
 
 
@@ -220,89 +221,95 @@ function rotate() {
 document.addEventListener('keydown', (event) => {
     event.preventDefault();
     switch (event.key) {
-        case ' ': 
+        case ' ':
             rotate();
             break;
         case 'ArrowUp':
             rotate();
             break;
-        case 'ArrowRight': 
+        case 'ArrowRight':
             moveRigth();
             break;
-        
-        case 'keydown': 
+
+        case 'keydown':
             moveRigth();
             break;
-        
-        case 'ArrowLeft': 
+
+        case 'ArrowLeft':
             moveLeft();
             break;
-        
-        case 'ArrowDown': 
+
+        case 'ArrowDown':
             moveDown();
             break;
-        
-        default: 
-            //Poner sonido fallo
-        
-        }
-    }); 
+
+        default:
+        //Poner sonido fallo
+
+    }
+});
 
 
-function tetrominoeVerification(){
+function tetrominoeVerification() {
     const boardArr = document.querySelectorAll('.block');
-    return currentTetromino.some(e => boardArr[e+currentPosition].classList.contains('printBlock'));
+    return currentTetromino.some(e => boardArr[e + currentPosition].classList.contains('printBlock'));
 
 }
 
 
 function createAndDrawNewTetromino() {
-    currentRotation=0;                  //reinicia la rotacion
+    currentRotation = 0;                  //reinicia la rotacion
     currentTetromino = currentTetrominoNext; //cambia el tetromino por el siguiente a imprimir
     currentPosition = 3;        // posicion de origen del nuevo tetromino
-    drawTetrominoeInMainBoard(currentTetromino); // pinta el tetromino nuevo
-    aleatTetrominoe2 = aleatTetrominoe; //guardo el objeto del tetrominoe actual, para poder seguir rotandolo
-    aleatTetrominoe = generateRandomTetrominoe(tetrominos); // crea el objeto del tetrominoe aleatorio
-    currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation] //crea el proximo tetromino
-    undrawTetrominoeInMiniBoard(aleatTetrominoeMini); //despinta el tetrominoe del cuadro pequeño
-    aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
-    drawTetrominoeInMiniBoard(aleatTetrominoeMini); // pinta el tetromino del mini board
+    if (!gameOver()) {
+        drawTetrominoeInMainBoard(currentTetromino); // pinta el tetromino nuevo
+        aleatTetrominoe2 = aleatTetrominoe; //guardo el objeto del tetrominoe actual, para poder seguir rotandolo
+        aleatTetrominoe = generateRandomTetrominoe(tetrominos); // crea el objeto del tetrominoe aleatorio
+        currentTetrominoNext = tetrominos[aleatTetrominoe.positionAtTetrominoeList][currentRotation] //crea el proximo tetromino
+        undrawTetrominoeInMiniBoard(aleatTetrominoeMini); //despinta el tetrominoe del cuadro pequeño
+        aleatTetrominoeMini = tetrominos__small[aleatTetrominoe.positionAtTetrominoeList][0]; //se crea el tetromino aleatorio para el mini board
+        drawTetrominoeInMiniBoard(aleatTetrominoeMini); // pinta el tetromino del mini board
+    }
 }
 
 let stop;
-function gameLoop(){
+function gameLoop() {
     stop = setInterval(() => {     //para parar el setInterval es clearInterval(stop)
-    if (currentTetromino.some((block) => (block+currentPosition+BOARD_WIDTH)>200) || !moveDown() ){
-        updateTetrisBoard() 
-        createAndDrawNewTetromino();
-    }   
-}, 1000);
+        if (currentTetromino.some((block) => (block + currentPosition + BOARD_WIDTH) > 200) || !moveDown()) {
+            updateTetrisBoard()
+            createAndDrawNewTetromino();
+        }
+    }, 1000);
 }
 
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'p'){
-        clearInterval(stop)
+    if (event.key === 'p') {
+        clearInterval(stop);
     }
-    if (event.key === 'Enter'){
+    if (event.key === 'Enter') {
         gameLoop();
     }
 })
-        
+
 
 
 function gameOver() {
     if (isGameOver()) { // se llama a la funcion isGameOver
-         let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
+        clearInterval(stop);
+        let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
         principalGame.innerHTML = '';  // Borra el principalGame
         let imgGameOver = document.createElement('img');  // se crea un tag IMG y se mete adentro de la variable imgGameOver
-        imgGameOver.src = "https://empresas.blogthinkbig.com/wp-content/uploads/2019/11/Imagen3-245003649.jpg?fit=960%2C720"; // se coloca la foto png dentro de imgGameOver
+        imgGameOver.src = "gameoverphrase.jpg"; // se coloca la foto png dentro de imgGameOver
         imgGameOver.classList.add('img_game-over'); // se le agrega la clase a la img
+        principalGame.classList.add('fondoNegro');
         principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
-        document.body.addEventListener('click', (e) =>  { // se agrega un listener al body para que se ejecute la funcion init
+        document.body.addEventListener('click', (e) => { // se agrega un listener al body para que se ejecute la funcion init
+            principalGame.classList.remove('fondoNegro');
             init();
         })
-    }
+        return true;
+    } return false;
 }
 
 let results = 0;
@@ -315,16 +322,16 @@ function drawScore() {
 }
 
 function updateTetrisBoard() {
-    let contador =0;
+    let contador = 0;
     let container = document.querySelector('.boards__container--big');
     let boardArr = Array.from(document.querySelectorAll('.boards__container--big > .block'));
-    for (let i =0; i<200; i+= BOARD_WIDTH){         //recorro cada fila
-        const fila = [i, i+1,i+2,i+3,i+4,i+5,i+6,i+7,i+8,i+9];
-        
-        if (fila.every(indice => boardArr[indice].classList.contains('printBlock'))){ //compruebo si están todas pintadas
-            
+    for (let i = 0; i < 200; i += BOARD_WIDTH) {         //recorro cada fila
+        const fila = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
+
+        if (fila.every(indice => boardArr[indice].classList.contains('printBlock'))) { //compruebo si están todas pintadas
+
             fila.forEach(a => boardArr[a].classList.remove('printBlock')) //borro la clase q pinta cada fila
-            
+
             let arrayRemove = boardArr.splice(i, BOARD_WIDTH);  //borro la fila
             boardArr = arrayRemove.concat(boardArr);           //agrego las filas pintadas al principio del array
             container.innerHTML = '';                     // vacío el contenedor
@@ -332,14 +339,42 @@ function updateTetrisBoard() {
 
             results += 50;  // sumo puntos
             drawScore();       // muestro los puntos 
-            contador ++;
+            contador++;
         }
     }
-    if (contador >= 4){
+    if (contador < 4 && contador > 0) {
+        //acá el sonido de cuando completa una línea
+    } else if (contador >= 4) {
         results += 1000;
         drawScore();
+        // acá de cuando completa 4, es decir hace tetris
     }
 };
 
+function isGameOver() {
+    if (tetrominoeVerification()) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
-init(); // Cambiar esto por el botón que llama a esta función (importante que sea en esta línea)
+
+function buttonStart() {
+    let btn = document.createElement('button');
+    btn.textContent = 'Start';
+    document.querySelector('.boards__container--big').appendChild(btn);
+    btn.addEventListener('click', () => {
+        init()
+        // const sonidoPlay = new Audio("tetris/perro.mp3");
+        // sonidoPlay.loop =true;
+        // sonidoPlay.play()
+    }
+    )
+}
+
+
+buttonStart();
+
+
+//init();  Cambiar esto por el botón que llama a esta función (importante que sea en esta línea)
