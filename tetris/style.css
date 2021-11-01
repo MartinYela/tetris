@@ -12,6 +12,7 @@ header {
 
 header img {
     width: 300px;
+    margin-top: 15px;
 }
 
 body {
@@ -103,4 +104,37 @@ body {
 }
 .fondoNegro {
     background-color: black;
+}
+.button{
+    cursor: pointer;
+    border-color: #303A21;
+    background-color: #C6CFA2;
+    justify-content: center;
+    display: flex;
+    height: 40px;
+    align-content: center;
+    flex-wrap: wrap;
+    width: 100px;
+    position: relative;
+    top: 500%;
+    left: 325%;
+    font-size: 1.5rem;
+}
+.maxScoreContainer {
+    position: relative;
+    top: 400px;
+    left: -32px;
+    width: 300px;
+}
+.maxScore {
+    text-align: center;
+}
+
+.instruction {
+    color: white;
+    width: 300px;
+    position: relative;
+    top: 580px;
+    left: -25px;
+   text-align: center;
 }

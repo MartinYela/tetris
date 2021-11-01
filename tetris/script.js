@@ -150,9 +150,19 @@ function isBottonBoardOut() {
 }
 
 
+// CARGAR TODOS LOS AUDIOS//
+
+const sonidoError = new Audio('song/error-rotar.mp3');
+const sonidoRotar = new Audio('song/rotar.mp3');
+const sonidoGameOver = new Audio('song/game-over.mp3');
+const sonidoLinea = new Audio('song/completar-linea.mp3');
+const sonidoTetris = new Audio('song/tetris-cuatro.mp3');
+const sonidoPrincipal = new Audio('song/principal.mp3');
+
+
 function moveRigth() {
     if (isRigthBoardOut()) {
-        // Poner sonido de que no se puede mover
+        sonidoError.play();
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
         currentPosition++;
@@ -164,7 +174,9 @@ function moveRigth() {
 }
 function moveLeft() {
     if (isLeftBoardOut()) {
-        // Poner sonido de que no se puede mover
+        sonidoPrincipal.pause();
+        sonidoError.play().then(() => sonidoPrincipal.play());
+
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
         currentPosition--;
@@ -177,7 +189,7 @@ function moveLeft() {
 function moveDown() {
     let comprobacion = true;
     if (isBottonBoardOut()) {
-        // Poner sonido de que no se puede mover
+
     } else {
         undrawTetrominoeInMainBoard(currentTetromino);
         currentPosition += BOARD_WIDTH;
@@ -192,6 +204,7 @@ function moveDown() {
 
 function rotate() {
     let comprobation = true;
+    let yaSono = false;
     const currentRotationnOLd = currentRotation;
     undrawTetrominoeInMainBoard(currentTetromino);
     if (currentRotation < tetrominos[aleatTetrominoe2.positionAtTetrominoeList].length - 1) {//si hay + posiciones para rotar
@@ -207,12 +220,16 @@ function rotate() {
         comprobation = isRigthBoardOutRotate();
     }
     if (tetrominoeVerification() || comprobation) {
-        //sonido de no se puede
+        sonidoError.play();
         currentRotation = currentRotationnOLd;
         currentTetromino = tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
+        yaSono = true;
     }
     drawTetrominoeInMainBoard(currentTetromino);
-    //Acá el sonido de cuando gira bien
+    if (!yaSono) {
+        sonidoRotar.play();
+    }
+
 }
 
 
@@ -261,7 +278,7 @@ function createAndDrawNewTetromino() {
     currentRotation = 0;                  //reinicia la rotacion
     currentTetromino = currentTetrominoNext; //cambia el tetromino por el siguiente a imprimir
     currentPosition = 3;        // posicion de origen del nuevo tetromino
-    if (!gameOver()){
+    if (!gameOver()) {
         drawTetrominoeInMainBoard(currentTetromino); // pinta el tetromino nuevo
         aleatTetrominoe2 = aleatTetrominoe; //guardo el objeto del tetrominoe actual, para poder seguir rotandolo
         aleatTetrominoe = generateRandomTetrominoe(tetrominos); // crea el objeto del tetrominoe aleatorio
@@ -303,11 +320,25 @@ function gameOver() {
         imgGameOver.classList.add('img_game-over'); // se le agrega la clase a la img
         principalGame.classList.add('fondoNegro');
         principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
+        let instructionClick = document.createElement('p');
+        instructionClick.classList.add('instruction');
+        instructionClick.textContent = 'Haga click para volver a jugar'
+        principalGame.appendChild(instructionClick);
+
+        if (results > localStorage.getItem('puntos')) {
+            localStorage.setItem('puntos', results);
+        }
+        sonidoPrincipal.pause();
+        sonidoGameOver.play();
+        
         document.body.addEventListener('click', (e) => { // se agrega un listener al body para que se ejecute la funcion init
             clearInterval(stop);
             principalGame.classList.remove('fondoNegro');
+            sonidoPrincipal.play();
             init();
         })
+
+        
         return true;
     } return false;
 }
@@ -343,11 +374,13 @@ function updateTetrisBoard() {
         }
     }
     if (contador < 4 && contador > 0) {
-        //acá el sonido de cuando completa una línea
+        sonidoPrincipal.pause();
+        sonidoLinea.play().then(setTimeout(() => sonidoPrincipal.play(), 500))
     } else if (contador >= 4) {
         results += 1000;
+        sonidoPrincipal.pause();
+        sonidoTetris.play().then(setTimeout(() => sonidoPrincipal.play(), 500))
         drawScore();
-        // acá de cuando completa 4, es decir hace tetris
     }
 };
 
@@ -363,17 +396,27 @@ function isGameOver() {
 
 function buttonStart() {
     let btn = document.createElement('button');
+    btn.classList.add('button');
     btn.textContent = 'Start';
     document.querySelector('.boards__container--big').appendChild(btn);
     btn.addEventListener('click', () => {
         init()
-        // const sonidoPlay = new Audio("tetris/perro.mp3");
-        // sonidoPlay.loop =true;
-        // sonidoPlay.play()
-    }
-    )
+        sonidoPrincipal.loop = true;
+        sonidoPrincipal.play();
+    })
+    let maxScoreContainer = document.createElement('div');
+    let maxScore = document.createElement('h2')
+    maxScoreContainer.classList.add('maxScoreContainer');
+    maxScore.classList.add('maxScore');
+    maxScore.textContent = 'La máxima puntuación es de: ' + localStorage.getItem('puntos') + ' puntos';
+    maxScoreContainer.appendChild(maxScore);
+    document.querySelector('.boards__container--big').appendChild(maxScoreContainer);
+
 }
 
+if (localStorage.getItem('puntos') === null) {
+    localStorage.setItem('puntos', 0);
+} 
 
 buttonStart();
 
