@@ -143,14 +143,26 @@ body {
     display: none;
 }
 
+.button_responsive{
+    cursor: pointer;
+    border-color: #303A21;
+    background-color: #C6CFA2;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+}
+
 @media (max-width: 400px){
     .container_boton{
         display: flex;
         justify-content: space-between;
+        gap: 10px;
     }
     .container__boards {
         flex-direction: column;
-        gap: 15px;
+        gap: 1px;
     }
     .boards__container--big {
         width: 200px;
