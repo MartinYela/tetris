@@ -138,3 +138,40 @@ body {
     left: -25px;
    text-align: center;
 }
+
+.container_boton {
+    display: none;
+}
+
+@media (max-width: 400px){
+    .container_boton{
+        display: flex;
+        justify-content: space-between;
+    }
+    .container__boards {
+        flex-direction: column;
+        gap: 15px;
+    }
+    .boards__container--big {
+        width: 200px;
+        height: 400px;
+        grid-template-columns: repeat(10, 20px);
+        grid-template-rows: repeat(20, 20px);
+    }
+    .maxScoreContainer {
+        top: 300px;
+        left: -20px;
+        width: 200px;
+    }
+    .maxScore {
+        font-size: 1rem;
+    }
+    .button{
+        top: 615%;
+        left: 250%;
+        font-size: 1.5rem;
+    }
+    .boards__container--rigth {
+         margin-top: 50px;
+    }
+}
