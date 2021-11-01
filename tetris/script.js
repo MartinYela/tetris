@@ -261,7 +261,7 @@ function createAndDrawNewTetromino() {
     currentRotation = 0;                  //reinicia la rotacion
     currentTetromino = currentTetrominoNext; //cambia el tetromino por el siguiente a imprimir
     currentPosition = 3;        // posicion de origen del nuevo tetromino
-    if (!gameOver()) {
+    if (!gameOver()){
         drawTetrominoeInMainBoard(currentTetromino); // pinta el tetromino nuevo
         aleatTetrominoe2 = aleatTetrominoe; //guardo el objeto del tetrominoe actual, para poder seguir rotandolo
         aleatTetrominoe = generateRandomTetrominoe(tetrominos); // crea el objeto del tetrominoe aleatorio
@@ -296,7 +296,6 @@ document.addEventListener('keydown', (event) => {
 
 function gameOver() {
     if (isGameOver()) { // se llama a la funcion isGameOver
-        clearInterval(stop);
         let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
         principalGame.innerHTML = '';  // Borra el principalGame
         let imgGameOver = document.createElement('img');  // se crea un tag IMG y se mete adentro de la variable imgGameOver
@@ -305,6 +304,7 @@ function gameOver() {
         principalGame.classList.add('fondoNegro');
         principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
         document.body.addEventListener('click', (e) => { // se agrega un listener al body para que se ejecute la funcion init
+            clearInterval(stop);
             principalGame.classList.remove('fondoNegro');
             init();
         })
@@ -353,6 +353,7 @@ function updateTetrisBoard() {
 
 function isGameOver() {
     if (tetrominoeVerification()) {
+        clearInterval(stop);
         return true;
     } else {
         return false;
