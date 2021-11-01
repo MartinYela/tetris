@@ -290,13 +290,14 @@ function createAndDrawNewTetromino() {
 }
 
 let stop;
+let speed = 1000;
 function gameLoop() {
     stop = setInterval(() => {     //para parar el setInterval es clearInterval(stop)
         if (currentTetromino.some((block) => (block + currentPosition + BOARD_WIDTH) > 200) || !moveDown()) {
             updateTetrisBoard()
             createAndDrawNewTetromino();
         }
-    }, 1000);
+    }, speed);
 }
 
 
@@ -309,10 +310,31 @@ document.addEventListener('keydown', (event) => {
     }
 })
 
+function subirVelocidad(){
+    if (results > 3500){
+        speed = 200;
+        clearInterval(stop);
+        gameLoop();
+    }else if (results > 3000){
+        speed = 400;
+        clearInterval(stop);
+        gameLoop();
+    } else if (results > 2000){
+        speed = 600;
+        clearInterval(stop);
+        gameLoop();
+    } else if (results > 1000){
+        speed = 700;
+        clearInterval(stop);
+        gameLoop();
+    }
+}
 
 
 function gameOver() {
+    subirVelocidad();
     if (isGameOver()) { // se llama a la funcion isGameOver
+        speed = 1000;
         let noRepeat = true;
         let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
         principalGame.innerHTML = '';  // Borra el principalGame
@@ -340,10 +362,7 @@ function gameOver() {
                 init();
             }
             noRepeat = false;
-
         })
-
-
         return true;
     } return false;
 }
