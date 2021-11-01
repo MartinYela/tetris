@@ -455,7 +455,10 @@ btnRotate.addEventListener('click', () => rotate());
 const btnRight = document.querySelector('.button--rigth');
 btnRight.addEventListener('click', () => moveRigth());
 const btnDown = document.querySelector('.button--down');
-btnDown.addEventListener('click', () => moveDown());
+btnDown.addEventListener('click', (e) => {
+    e.preventDefault();
+    moveDown()
+} );
 
 
 //init();  Cambiar esto por el botón que llama a esta función (importante que sea en esta línea)
