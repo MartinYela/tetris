@@ -420,5 +420,14 @@ if (localStorage.getItem('puntos') === null) {
 
 buttonStart();
 
+const btnLeft = document.querySelector('.button--left');
+btnLeft.addEventListener('click', ()=> moveLeft());
+const btnRotate = document.querySelector('.button--rotate');
+btnRotate.addEventListener('click', ()=> rotate());
+const btnRight = document.querySelector('.button--rigth');
+btnRight.addEventListener('click', ()=> moveRigth());
+const btnDown = document.querySelector('.button--down');
+btnDown.addEventListener('click', ()=> moveDown());
+
 
 //init();  Cambiar esto por el botón que llama a esta función (importante que sea en esta línea)
