@@ -313,6 +313,7 @@ document.addEventListener('keydown', (event) => {
 
 function gameOver() {
     if (isGameOver()) { // se llama a la funcion isGameOver
+        let noRepeat = 1;
         let principalGame = document.getElementById('boards__container--big') // traigo el board big y lo meto adentro de la variable principalGame
         principalGame.innerHTML = '';  // Borra el principalGame
         let imgGameOver = document.createElement('img');  // se crea un tag IMG y se mete adentro de la variable imgGameOver
@@ -330,15 +331,19 @@ function gameOver() {
         }
         sonidoPrincipal.pause();
         sonidoGameOver.play();
-        
+
         document.body.addEventListener('click', (e) => { // se agrega un listener al body para que se ejecute la funcion init
-            clearInterval(stop);
-            principalGame.classList.remove('fondoNegro');
-            sonidoPrincipal.play();
-            init();
+            if (noRepeat === 1) {
+                clearInterval(stop);
+                principalGame.classList.remove('fondoNegro');
+                sonidoPrincipal.play();
+                init();
+            }
+            noRepeat++;
+
         })
 
-        
+
         return true;
     } return false;
 }
@@ -416,18 +421,18 @@ function buttonStart() {
 
 if (localStorage.getItem('puntos') === null) {
     localStorage.setItem('puntos', 0);
-} 
+}
 
 buttonStart();
 
 const btnLeft = document.querySelector('.button--left');
-btnLeft.addEventListener('click', ()=> moveLeft());
+btnLeft.addEventListener('click', () => moveLeft());
 const btnRotate = document.querySelector('.button--rotate');
-btnRotate.addEventListener('click', ()=> rotate());
+btnRotate.addEventListener('click', () => rotate());
 const btnRight = document.querySelector('.button--rigth');
-btnRight.addEventListener('click', ()=> moveRigth());
+btnRight.addEventListener('click', () => moveRigth());
 const btnDown = document.querySelector('.button--down');
-btnDown.addEventListener('click', ()=> moveDown());
+btnDown.addEventListener('click', () => moveDown());
 
 
 //init();  Cambiar esto por el botón que llama a esta función (importante que sea en esta línea)
