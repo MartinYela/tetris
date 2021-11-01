@@ -343,9 +343,13 @@ function gameOver() {
         imgGameOver.classList.add('img_game-over'); // se le agrega la clase a la img
         principalGame.classList.add('fondoNegro');
         principalGame.appendChild(imgGameOver); // se agrega la imagen al board principal
+        let puntuacion = document.createElement('p');
+        puntuacion.textContent = 'Su puntuación fue de: ' + results;
+        puntuacion.classList.add('puntuacion');
         let instructionClick = document.createElement('p');
         instructionClick.classList.add('instruction');
         instructionClick.textContent = 'Haga click para volver a jugar'
+        principalGame.appendChild(puntuacion);
         principalGame.appendChild(instructionClick);
 
         if (results > localStorage.getItem('puntos')) {

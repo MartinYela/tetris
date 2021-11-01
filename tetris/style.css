@@ -101,6 +101,7 @@ body {
     width: 250px;
     margin-left: 25px;
     margin-top: 206.25px;
+    opacity: 0.1;
 }
 .fondoNegro {
     background-color: black;
@@ -135,7 +136,7 @@ body {
     width: 300px;
     position: relative;
     top: 580px;
-    left: -25px;
+    left: -55px;
    text-align: center;
 }
 
@@ -153,6 +154,15 @@ body {
     border-radius: 50%;
     font-size: 0.7rem;
 }
+.puntuacion{
+    color: white;
+    width: 300px;
+    position: relative;
+    top: 350px;
+    left: -25px;
+    font-size: 1.2rem;
+   text-align: center;
+}
 
 @media (max-width: 400px){
     .container_boton{
@@ -166,6 +176,7 @@ body {
         height: 400px;
         grid-template-columns: repeat(10, 20px);
         grid-template-rows: repeat(20, 20px);
+        margin-right: 5px;
     }
     .maxScoreContainer {
         top: 300px;
@@ -207,5 +218,21 @@ body {
     }
     .container__boards {
         gap: 1px;
+    }
+    .puntuacion{
+        color: white;
+        width: 200px;
+        position: relative;
+        top: 60px;
+        left: -20px;
+        font-size: 0.8rem;
+       text-align: center;
+    }
+    .instruction {
+        width: 200px;
+        font-size: 0.6rem;
+        top: 380px;
+        left: -40px;
+       
     }
 }
