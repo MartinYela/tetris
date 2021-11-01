@@ -219,7 +219,7 @@ function rotate() {
     } else {
         comprobation = isRigthBoardOutRotate();
     }
-    if (tetrominoeVerification() || comprobation) {
+    if (tetrominoeVerification() || comprobation || isBottonBoardOut()) {
         sonidoError.play();
         currentRotation = currentRotationnOLd;
         currentTetromino = tetrominos[aleatTetrominoe2.positionAtTetrominoeList][currentRotation];
